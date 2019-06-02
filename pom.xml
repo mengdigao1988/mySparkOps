@@ -10,14 +10,14 @@
 
 
     <properties>
-        <spark.version>2.3.0</spark.version>
+        <spark.version>2.3.1</spark.version>
         <kafka.version>0.9.0.1</kafka.version>
         <drools.version>6.4.0.Final</drools.version>
         <akka.versin>2.4.20</akka.versin>
         <hbase.version>1.4.9</hbase.version>
         <flink.version>1.7.2</flink.version>
 
-        <spark.scope>compile</spark.scope>
+        <spark.scope>provided</spark.scope>
         <mysql.scope>provided</mysql.scope>
         <log4j.scope>compile</log4j.scope>
         <kafka.scope>provided</kafka.scope>

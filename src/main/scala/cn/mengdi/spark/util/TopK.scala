@@ -1,12 +1,14 @@
 package cn.mengdi.spark.util
 
+import org.apache.spark.sql.Encoder
+
 import scala.reflect.ClassTag
 
 
 object TopK {
 
   // wrap that contains top k elems
-  case class Tops[T <: Ordered[T]](K: Int, var tops: Array[T]) {
+  case class Tops[T <: Ordered[T] : Encoder](K: Int, var tops: Array[T]) {
 
     // + method used for agg
     def +(that: Tops[T])(implicit ct: ClassTag[T]): Tops[T] = {
@@ -21,10 +23,10 @@ object TopK {
           // build heap when num of elems reaches k
           if (this.tops.size == K) {
             this.tops = buildHeap(this.tops)
-          } else {
-            // insert new elem to heap, when heap is built
-            insert(this.tops, elem)
           }
+        } else {
+          // insert new elem to heap, when heap is built
+          insert(this.tops, elem)
         }
       }
       this
@@ -46,11 +48,6 @@ object TopK {
   /* build min heap with first k elements*/
   private def buildHeap[T <: Ordered[T]](data: Array[T]): Array[T] = {
     MinHeap.buildHeap(data)
-  }
-
-  // convert data sets to Tops
-  def build[T <: Ordered[T]](K: Int, elem: T)(implicit ct: ClassTag[T]): Tops[T] = {
-    Tops(K, Array[T](elem))
   }
 
 

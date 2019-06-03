@@ -17,7 +17,7 @@
         <hbase.version>1.4.9</hbase.version>
         <flink.version>1.7.2</flink.version>
 
-        <spark.scope>provided</spark.scope>
+        <spark.scope>compile</spark.scope>
         <mysql.scope>provided</mysql.scope>
         <log4j.scope>compile</log4j.scope>
         <kafka.scope>provided</kafka.scope>
@@ -27,6 +27,7 @@
     </properties>
 
     <dependencies>
+
         <!--AKKA-->
         <dependency>
             <groupId>com.typesafe.akka</groupId>

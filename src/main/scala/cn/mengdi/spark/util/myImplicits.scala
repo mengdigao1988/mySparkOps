@@ -4,6 +4,7 @@ import org.apache.spark.sql.{Dataset, Encoder, Encoders}
 import scala.language.implicitConversions
 import scala.reflect.ClassTag
 
+
 object myImplicits {
   // implicitly convert classTag to Encoder
   implicit def kEncoder[A](implicit ct: ClassTag[A]):Encoder[A] = Encoders.kryo[A](ct)

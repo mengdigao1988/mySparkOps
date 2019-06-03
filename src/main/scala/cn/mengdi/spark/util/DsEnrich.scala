@@ -1,11 +1,15 @@
 package cn.mengdi.spark.util
 
+import cn.mengdi.spark.util.BottomK.Bottoms
+import cn.mengdi.spark.util.TopK.Tops
 import org.apache.spark.sql.{Dataset, Encoder, SparkSession}
+
+import scala.reflect.runtime.universe.TypeTag
+import scala.reflect.ClassTag
 import cn.mengdi.spark.util.myImplicits._
 
-import scala.reflect.ClassTag
-
 class DsEnrich[U <: Ordered[U] : Encoder](data: Dataset[U], spark: SparkSession) extends Serializable {
+
 
   /**
     * the method that return top K elements within each key,
@@ -18,12 +22,25 @@ class DsEnrich[U <: Ordered[U] : Encoder](data: Dataset[U], spark: SparkSession)
   def topkByKey[K : Encoder](k: Int, func: U => K)(implicit ct: ClassTag[U]): Dataset[U] = {
 
     data
-      .map(t => TopK.build(k, t))
+      .map(t => Tops(k, Array(t)))
       .groupByKey(t => func.apply(t.tops(0)))
-      .reduceGroups(_ + _)
+      .reduceGroups((_: Tops[U]) + (_: Tops[U]))
       .flatMap(t => {
         val tops = t._2.tops
         tops
+      })
+  }
+
+
+  def bottomkByKey[K : Encoder](k: Int, func: U => K)(implicit ct: ClassTag[U]): Dataset[U] = {
+
+    data
+      .map(t => Bottoms(k, Array(t)))
+      .groupByKey(t => func.apply(t.bottoms(0)))
+      .reduceGroups(_ + _)
+      .flatMap(t => {
+        val bottoms = t._2.bottoms
+        bottoms
       })
   }
 }

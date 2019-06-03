@@ -71,7 +71,7 @@ object MinHeap {
   }
 
   // switch the elems at i and j
-  private def swap[U<: Ordered[U]](i: Int, j: Int, datas: Array[U]): Unit = {
+  private def swap[U <: Ordered[U]](i: Int, j: Int, datas: Array[U]): Unit = {
     val tmp = datas(i)
     datas(i) = datas(j)
     datas(j) = tmp

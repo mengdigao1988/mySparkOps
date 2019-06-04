@@ -31,7 +31,6 @@ object findOldestAndYoungestGuy {
     // show oldest 1 guy within each nation
     ds.topkByKey(2, func = u => u.nation).show()
 
-
     spark.stop()
 
   }

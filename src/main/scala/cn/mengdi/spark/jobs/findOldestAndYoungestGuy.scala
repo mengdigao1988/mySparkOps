@@ -25,11 +25,11 @@ object findOldestAndYoungestGuy {
       Person("jp", "yui", 5)
     ).toDS().cache()
 
-    // show oldest 1 guy within each nation
-    ds.topkByKey(2, func = u => u.nation).show()
-
     // show youngest 1 guy within each nation
     ds.bottomkByKey(2, func = u => u.nation).show()
+
+    // show oldest 1 guy within each nation
+    ds.topkByKey(2, func = u => u.nation).show()
 
 
     spark.stop()

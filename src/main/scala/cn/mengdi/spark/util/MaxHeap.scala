@@ -57,12 +57,12 @@ object MaxHeap {
 
   // return left child index
   private def left(i: Int): Int = {
-    (i + 1) * 2
+    i * 2 + 1
   }
 
   // return right child index
   private def right(i: Int): Int = {
-    (i + 2) * 2 - 1
+    (i + 1) * 2
   }
 
   private def swap[U <: Ordered[U]](i: Int, j: Int, heap: Array[U]): Unit = {

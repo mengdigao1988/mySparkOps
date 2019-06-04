@@ -28,6 +28,19 @@ object MinHeap {
     heapify(0, heap)
   }
 
+  // merge tow top-k min heap into one top-k heap
+  def merge[U <: Ordered[U]](heap1: Array[U], heap2: Array[U]): Unit = {
+    for (i <- heap2.indices.reverse) {
+      insert(heap2(i), heap1)
+    }
+  }
+
+
+  def insertAll[U <: Ordered[U]](unheap: Array[U], heap: Array[U]): Unit = {
+    for (e <- unheap) {
+      insert(e, heap)
+    }
+  }
 
   // find the smallest element among root, left, right, and replace the root with smallest if needed
   private def heapify[U <: Ordered[U]](i: Int, datas: Array[U]): Unit = {
@@ -62,12 +75,12 @@ object MinHeap {
 
   // return the left child index
   private def left(i: Int): Int = {
-    (i + 1) * 2
+    i * 2 + 1
   }
 
   // return the right child index
   private def right(i: Int): Int = {
-    (i + 1) * 2 - 1
+    (i + 1) * 2
   }
 
   // switch the elems at i and j

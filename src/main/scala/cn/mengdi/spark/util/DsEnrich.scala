@@ -22,13 +22,13 @@ class DsEnrich[U <: Ordered[U] : Encoder](data: Dataset[U], spark: SparkSession)
   def topkByKey[K : Encoder](k: Int, func: U => K)(implicit ct: ClassTag[U]): Dataset[U] = {
 
     data
-      .map(t => Tops(k, Array(t)))
+      .map(t => Tops(k, 0, Array(t)))
       .groupByKey(t => func.apply(t.tops(0)))
       .reduceGroups((_: Tops[U]) + (_: Tops[U]))
       .flatMap(t => {
-        val tops = t._2.tops
-        tops
+        t._2.tops
       })
+
   }
 
 
@@ -37,10 +37,9 @@ class DsEnrich[U <: Ordered[U] : Encoder](data: Dataset[U], spark: SparkSession)
     data
       .map(t => Bottoms(k, Array(t)))
       .groupByKey(t => func.apply(t.bottoms(0)))
-      .reduceGroups(_ + _)
+      .reduceGroups((_: Bottoms[U]) + (_: Bottoms[U]))
       .flatMap(t => {
-        val bottoms = t._2.bottoms
-        bottoms
+        t._2.bottoms
       })
   }
 }
